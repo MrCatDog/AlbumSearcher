@@ -7,7 +7,6 @@ import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.albumsearcher.util.viewModelsExt
 
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -22,9 +21,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.searchResults.layoutManager = LinearLayoutManager(baseContext)
-        binding.searchResults.adapter = RecyclerAdapter()
+        val adapter = RecyclerAdapter()
+        binding.searchResults.adapter = adapter
 
         binding.searchBar.addTextChangedListener { s -> viewModel.searchTextChanged(s.toString()) }
+
+        viewModel.albums.observe(this) {
+            adapter.setData(it, 50)
+        }
 
     }
 }
