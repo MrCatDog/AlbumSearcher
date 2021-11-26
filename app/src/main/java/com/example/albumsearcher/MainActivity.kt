@@ -1,11 +1,19 @@
 package com.example.albumsearcher
 
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.albumsearcher.databinding.ActivityMainBinding
 import androidx.core.widget.addTextChangedListener
+import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.albumsearcher.util.viewModelsExt
+import com.squareup.picasso.Picasso
+
+@BindingAdapter("app:url")
+fun loadImage(view: ImageView?, url: String?) {
+    Picasso.get().load(url).into(view)
+}
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,6 +37,5 @@ class MainActivity : AppCompatActivity() {
         viewModel.albums.observe(this) {
             adapter.setData(it, 50)
         }
-
     }
 }

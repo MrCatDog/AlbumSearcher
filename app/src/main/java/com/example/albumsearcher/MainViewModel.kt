@@ -1,5 +1,6 @@
 package com.example.albumsearcher
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,6 +8,12 @@ import okhttp3.*
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
+import com.squareup.picasso.Picasso
+
+import androidx.databinding.BindingAdapter
+
+
+
 
 const val URL_BASE = "https://itunes.apple.com/search?term="
 const val URL_PARAMETERS = "&media=music&entity=album&attribute=albumTerm"
@@ -46,6 +53,9 @@ class MainViewModel : ViewModel() {
                         if (response.isSuccessful) {
                             val answer = JSONObject(response.body?.string())
                             val count = answer.get(RESULT_COUNT_TAG) as Int
+                            if(count == 0) {
+                                //todo альбомы не найдены
+                            }
                             val jArray = answer.get(RESULT_TAG) as JSONArray
                             val albums = ArrayList<BaseAlbumInfo>()
                             var album: JSONObject
@@ -62,6 +72,7 @@ class MainViewModel : ViewModel() {
                             }
                             _albums.postValue(albums)
                         } else {
+                            Log.e("callback", "error")
                             //TODO("some troubles maybe show a snack?")
                         }
                     }
