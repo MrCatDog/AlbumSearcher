@@ -8,6 +8,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.albumsearcher.util.viewModelsExt
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 
 @BindingAdapter("app:url")
@@ -37,5 +38,14 @@ class MainActivity : AppCompatActivity() {
         viewModel.albums.observe(this) {
             adapter.setData(it, 50)
         }
+
+        viewModel.errMsg.observe(this) {
+            showSnack(it)
+        }
+    }
+
+    private fun showSnack(text : String) {
+        Snackbar.make(binding.root, text, Snackbar.LENGTH_LONG).show()
+
     }
 }

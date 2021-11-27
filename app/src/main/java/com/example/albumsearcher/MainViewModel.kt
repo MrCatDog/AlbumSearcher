@@ -1,19 +1,13 @@
 package com.example.albumsearcher
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.albumsearcher.util.MutableLiveEvent
 import okhttp3.*
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
-import com.squareup.picasso.Picasso
-
-import androidx.databinding.BindingAdapter
-
-
-
 
 const val URL_BASE = "https://itunes.apple.com/search?term="
 const val URL_PARAMETERS = "&media=music&entity=album&attribute=albumTerm"
@@ -32,6 +26,10 @@ class MainViewModel : ViewModel() {
     val albums: LiveData<List<BaseAlbumInfo>>
         get() = _albums
 
+    private val _errMsg = MutableLiveEvent<String>()
+    val errMsg: LiveData<String>
+        get() = _errMsg
+
     fun searchTextChanged(text: CharSequence) {
         if (text.trim().isNotEmpty()) {
             call?.cancel() //todo вот это скорее всего потоконебезопасно
@@ -39,7 +37,7 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun findMore(text: CharSequence) {
+    private fun findMore(text: CharSequence) {
         call = client.newCall(
             Request.Builder()
                 .url(URL_BASE + text + URL_PARAMETERS)
@@ -53,32 +51,33 @@ class MainViewModel : ViewModel() {
                         if (response.isSuccessful) {
                             val answer = JSONObject(response.body?.string())
                             val count = answer.get(RESULT_COUNT_TAG) as Int
-                            if(count == 0) {
-                                //todo альбомы не найдены
-                            }
-                            val jArray = answer.get(RESULT_TAG) as JSONArray
-                            val albums = ArrayList<BaseAlbumInfo>()
-                            var album: JSONObject
-                            for (i in 0 until count) {
-                                album = jArray.getJSONObject(i)
-                                albums.add(
-                                    BaseAlbumInfo(
-                                        album.getString("collectionName"),
-                                        album.getString("artistName"),
-                                        album.getString("artworkUrl100"),
-                                        album.getDouble("collectionId")
+                            if(count != 0) {
+                                val jArray = answer.get(RESULT_TAG) as JSONArray
+                                val albums = ArrayList<BaseAlbumInfo>()
+                                var album: JSONObject
+                                for (i in 0 until count) {
+                                    album = jArray.getJSONObject(i)
+                                    albums.add(
+                                        BaseAlbumInfo(
+                                            album.getString("collectionName"),
+                                            album.getString("artistName"),
+                                            album.getString("artworkUrl100"),
+                                            album.getDouble("collectionId")
+                                        )
                                     )
-                                )
+                                }
+                                _albums.postValue(albums)
+                            } else {
+                                _errMsg.postValue("No results")
                             }
-                            _albums.postValue(albums)
                         } else {
-                            Log.e("callback", "error")
+                            _errMsg.postValue("Connection troubles: " + response.code.toString())
                             //TODO("some troubles maybe show a snack?")
                         }
                     }
 
                     override fun onFailure(call: Call, e: IOException) {
-                        //TODO("Not yet implemented")
+                        _errMsg.postValue("Connection troubles: " + e.localizedMessage )
                     }
                 }
             )
