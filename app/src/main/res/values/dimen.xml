@@ -7,4 +7,5 @@
     <dimen name="album_info_margin">5dp</dimen>
     <dimen name="album_info_cover_width">100dp</dimen>
     <dimen name="album_info_cover_height">100dp</dimen>
+    <dimen name="album_info_padding_from_cover">5dp</dimen>
 </resources>

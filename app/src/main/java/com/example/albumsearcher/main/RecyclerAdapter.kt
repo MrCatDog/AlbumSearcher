@@ -1,9 +1,11 @@
-package com.example.albumsearcher
+package com.example.albumsearcher.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.albumsearcher.BaseAlbumInfo
+import com.example.albumsearcher.R
 import com.example.albumsearcher.databinding.SearchItemBinding
 import java.util.ArrayList
 

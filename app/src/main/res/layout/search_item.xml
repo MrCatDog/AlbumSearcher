@@ -4,7 +4,7 @@
     <data>
         <variable
             name="album"
-            type="com.example.albumsearcher.BaseAlbumInfo" />
+            type="com.example.albumsearcher.main.MainModel.BaseAlbumInfo" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"

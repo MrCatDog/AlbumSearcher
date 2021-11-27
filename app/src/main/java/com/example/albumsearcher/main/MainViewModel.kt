@@ -1,4 +1,4 @@
-package com.example.albumsearcher
+package com.example.albumsearcher.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -19,11 +19,12 @@ const val RESULT_TAG = "results"
 
 class MainViewModel : ViewModel() {
 
+    private val model = MainModel()
     private val client = OkHttpClient()
     private var call: Call? = null
 
-    private val _albums = MutableLiveData<List<BaseAlbumInfo>>()
-    val albums: LiveData<List<BaseAlbumInfo>>
+    private val _albums = MutableLiveData<List<MainModel.BaseAlbumInfo>>()
+    val albums: LiveData<List<MainModel.BaseAlbumInfo>>
         get() = _albums
 
     private val _errMsg = MutableLiveEvent<String>()
@@ -53,12 +54,11 @@ class MainViewModel : ViewModel() {
                             val count = answer.get(RESULT_COUNT_TAG) as Int
                             if(count != 0) {
                                 val jArray = answer.get(RESULT_TAG) as JSONArray
-                                val albums = ArrayList<BaseAlbumInfo>()
                                 var album: JSONObject
                                 for (i in 0 until count) {
                                     album = jArray.getJSONObject(i)
-                                    albums.add(
-                                        BaseAlbumInfo(
+                                    model.items.add(
+                                        MainModel.BaseAlbumInfo(
                                             album.getString("collectionName"),
                                             album.getString("artistName"),
                                             album.getString("artworkUrl100"),
@@ -66,7 +66,7 @@ class MainViewModel : ViewModel() {
                                         )
                                     )
                                 }
-                                _albums.postValue(albums)
+                                _albums.postValue(model.items)
                             } else {
                                 _errMsg.postValue("No results")
                             }

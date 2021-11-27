@@ -1,4 +1,4 @@
-package com.example.albumsearcher
+package com.example.albumsearcher.main
 
 import android.os.Bundle
 import android.widget.ImageView
