@@ -2,4 +2,6 @@
     <string name="app_name">AlbumSearcher</string>
     <string name="search_hint">Lets find something</string>
     <string name="album_image_desc">Album cover</string>
+    
+    <string name="album_info_songs_precurse">Songs: </string>
 </resources>

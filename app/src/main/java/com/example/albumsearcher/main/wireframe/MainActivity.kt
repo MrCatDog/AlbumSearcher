@@ -1,23 +1,21 @@
-package com.example.albumsearcher.main
+package com.example.albumsearcher.main.wireframe
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ImageView
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.albumsearcher.databinding.ActivityMainBinding
 import androidx.core.widget.addTextChangedListener
-import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.albumsearcher.Shared
-import com.example.albumsearcher.albumInfo.AlbumInfoActivity
+import com.example.albumsearcher.albumInfo.wireframe.AlbumInfoActivity
+import com.example.albumsearcher.main.adapters.RecyclerAdapter
+import com.example.albumsearcher.main.viewModel.MainViewModel
+
 import com.example.albumsearcher.util.viewModelsExt
 import com.google.android.material.snackbar.Snackbar
-import com.squareup.picasso.Picasso
 
-@BindingAdapter("app:url")
-fun loadImage(view: ImageView?, url: String?) {
-    Picasso.get().load(url).into(view)
-}
+const val LOG_TAG = "AlbumSearcher"
 
 class MainActivity : AppCompatActivity(), RecyclerAdapter.OnItemClickListener {
 
@@ -42,13 +40,18 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.OnItemClickListener {
             adapter.setData(it)
         }
 
-        viewModel.errMsg.observe(this) {
-            showSnack(it)
+        viewModel.err.observe(this) {
+            Log.e(LOG_TAG, it.stackTraceToString())
+            showSnack(it.message ?: "", Snackbar.LENGTH_LONG)//R.string.unkown_error
+        }
+
+        viewModel.noResultEvent.observe(this) {
+            showSnack("No results", Snackbar.LENGTH_SHORT)
         }
     }
 
-    private fun showSnack(text: String) {
-        Snackbar.make(binding.root, text, Snackbar.LENGTH_LONG).show()
+    private fun showSnack(text: String, length : Int) {
+        Snackbar.make(binding.root, text, length).show()
     }
 
     override fun onItemClick(position: Int) {

@@ -1,4 +1,4 @@
-package com.example.albumsearcher.albumInfo
+package com.example.albumsearcher.albumInfo.model
 
 data class AdditionalAlbumInfo(
     val albumName: String,
@@ -10,5 +10,6 @@ data class AdditionalAlbumInfo(
     val currency: String,
     val release: String,
     val copyright: String,
-    val genre: String
+    val genre: String,
+    val explicit: String
     )

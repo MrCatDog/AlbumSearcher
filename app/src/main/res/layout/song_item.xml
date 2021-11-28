@@ -2,6 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="song"
+            type="com.example.albumsearcher.albumInfo.model.SongInfo" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -10,6 +16,7 @@
             android:id="@+id/song_number"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:text="@{song.number}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/song_name"
@@ -19,10 +26,12 @@
             android:id="@+id/song_name"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:text="@{song.name}"
+            android:layout_marginStart="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/song_number"
-            app:layout_constraintRight_toRightOf="parent"/>
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

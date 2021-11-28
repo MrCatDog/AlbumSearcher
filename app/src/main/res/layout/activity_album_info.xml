@@ -7,7 +7,7 @@
     <data>
         <variable
             name="album"
-            type="com.example.albumsearcher.albumInfo.AdditionalAlbumInfo" />
+            type="com.example.albumsearcher.albumInfo.model.AdditionalAlbumInfo" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -27,7 +27,6 @@
                 android:layout_marginEnd="@dimen/album_info_padding_from_cover"
                 android:layout_marginBottom="@dimen/album_info_padding_from_cover"
                 android:contentDescription="@string/album_image_desc"
-                app:layout_constraintBottom_toTopOf="@id/album_info_price"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/album_info_album_name"
                 app:layout_constraintTop_toTopOf="parent"
@@ -39,7 +38,6 @@
                 android:layout_height="wrap_content"
                 android:singleLine="false"
                 android:text="@{album.albumName}"
-                app:layout_constraintBottom_toTopOf="@id/album_info_artist"
                 app:layout_constraintLeft_toRightOf="@id/album_info_cover"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -72,56 +70,73 @@
                 android:layout_height="wrap_content"
                 android:singleLine="false"
                 android:text="@{album.genre}"
-                app:layout_constraintBottom_toBottomOf="@id/album_info_cover"
-                app:layout_constraintLeft_toLeftOf="@id/album_info_release_date"
-                app:layout_constraintRight_toLeftOf="@id/album_info_country"
-                app:layout_constraintStart_toStartOf="@+id/album_info_release_date"
-                app:layout_constraintTop_toBottomOf="@id/album_info_release_date" />
+                app:layout_constraintBottom_toTopOf="@id/barrier2"
+                app:layout_constraintLeft_toLeftOf="@id/album_info_release_date" />
 
             <TextView
                 android:id="@+id/album_info_country"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingHorizontal="5dp"
                 android:text="@{album.country}"
-                android:padding="5dp"
-                app:layout_constraintBottom_toBottomOf="@id/album_info_genre"
-                app:layout_constraintLeft_toRightOf="@id/album_info_genre"
+                app:layout_constraintBottom_toBottomOf="@id/barrier2"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@id/album_info_genre"
-                app:layout_constraintStart_toEndOf="@+id/album_info_genre"/>
+                app:layout_constraintStart_toEndOf="@+id/album_info_genre"
+                app:layout_constraintTop_toTopOf="@id/album_info_genre" />
+
+            <TextView
+                android:id="@+id/album_info_explicit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{album.explicit}"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/album_info_country"
+                app:layout_constraintTop_toTopOf="@id/album_info_country" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="album_info_genre,album_info_cover,album_info_country, album_info_explicit"
+                tools:layout_editor_absoluteX="401dp" />
 
             <TextView
                 android:id="@+id/album_info_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{album.price}"
-                app:layout_constraintBottom_toBottomOf="@id/album_info_currency"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/album_info_currency"
-                app:layout_constraintTop_toBottomOf="@id/album_info_cover" />
+                app:layout_constraintTop_toBottomOf="@id/barrier2" />
 
             <TextView
                 android:id="@+id/album_info_currency"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
                 android:text="@{album.currency}"
                 app:layout_constraintBottom_toBottomOf="@id/album_info_price"
                 app:layout_constraintLeft_toRightOf="@id/album_info_price"
                 app:layout_constraintRight_toRightOf="@id/album_info_cover"
-                app:layout_constraintTop_toTopOf="@id/album_info_price"
-                app:layout_constraintStart_toEndOf="@id/album_info_price"/>
+                app:layout_constraintTop_toTopOf="@id/album_info_price" />
 
             <TextView
                 android:id="@+id/album_info_copyright"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
                 android:singleLine="false"
                 android:text="@{album.copyright}"
-                app:layout_constraintBottom_toBottomOf="@id/album_info_songs_count"
-                app:layout_constraintLeft_toLeftOf="@id/album_info_genre"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@id/album_info_currency" />
+                app:layout_constraintStart_toStartOf="@id/album_info_genre"
+                app:layout_constraintTop_toBottomOf="@id/barrier2" />
+
+            <TextView
+                android:id="@+id/album_info_songs_precurse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/album_info_songs_precurse"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/album_info_price" />
 
             <TextView
                 android:id="@+id/album_info_songs_count"
@@ -129,10 +144,17 @@
                 android:layout_height="wrap_content"
                 android:singleLine="false"
                 android:text="@{album.songCount}"
-                app:layout_constraintBottom_toBottomOf="@id/album_info_copyright"
-                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/album_info_songs_precurse"
                 app:layout_constraintRight_toRightOf="@id/album_info_currency"
                 app:layout_constraintTop_toBottomOf="@id/album_info_price" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="album_info_copyright,album_info_songs_count, album_info_songs_precurse"
+                tools:layout_editor_absoluteY="100dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/album_info_songs"
@@ -141,7 +163,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/album_info_copyright" />
+                app:layout_constraintTop_toBottomOf="@id/barrier3" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

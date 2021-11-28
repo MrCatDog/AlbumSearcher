@@ -4,7 +4,7 @@
     <data>
         <variable
             name="album"
-            type="com.example.albumsearcher.main.BaseAlbumInfo" />
+            type="com.example.albumsearcher.main.model.BaseAlbumInfo" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -19,41 +19,29 @@
             android:contentDescription="@string/album_image_desc"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/base_info"
             app:layout_constraintTop_toTopOf="parent"
             app:url="@{album.coverURL}" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/base_info"
+        <TextView
+            android:id="@+id/album_name_holder"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:paddingHorizontal="@dimen/search_item_base_info_padding"
+            android:gravity="bottom|start"
+            android:text="@{album.albumName}"
+            app:layout_constraintBottom_toTopOf="@id/artist_name_holder"
+            app:layout_constraintLeft_toRightOf="@id/image_holder"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/artist_name_holder"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="@{album.artistName}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/image_holder"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/album_name_holder" />
 
-            <TextView
-                android:id="@+id/album_name_holder"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:gravity="bottom|start"
-                android:text="@{album.albumName}"
-                app:layout_constraintBottom_toTopOf="@id/artist_name_holder"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/artist_name_holder"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:text="@{album.artistName}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/album_name_holder" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

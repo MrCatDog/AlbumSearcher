@@ -1,4 +1,4 @@
-package com.example.albumsearcher.main
+package com.example.albumsearcher.main.adapters
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.albumsearcher.R
 import com.example.albumsearcher.databinding.SearchItemBinding
+import com.example.albumsearcher.main.model.BaseAlbumInfo
 
 class RecyclerAdapter(private val listener: OnItemClickListener) : RecyclerView.Adapter<RecyclerAdapter.AlbumHolder>() {
 
