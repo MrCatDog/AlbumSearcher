@@ -10,11 +10,15 @@ import com.example.albumsearcher.R
 import com.example.albumsearcher.databinding.SearchItemBinding
 import com.example.albumsearcher.main.model.BaseAlbumInfo
 
-class RecyclerAdapter(private val listener: OnItemClickListener) : RecyclerView.Adapter<RecyclerAdapter.AlbumHolder>() {
+class RecyclerAdapter(private val listener: OnItemClickListener) :
+    RecyclerView.Adapter<RecyclerAdapter.AlbumHolder>() {
 
     private var items: List<BaseAlbumInfo> = ArrayList()
 
-    class AlbumHolder(private val binding: SearchItemBinding, private val listener : OnItemClickListener) :
+    class AlbumHolder(
+        private val binding: SearchItemBinding,
+        private val listener: OnItemClickListener
+    ) :
         RecyclerView.ViewHolder(binding.root), View.OnClickListener {
 
         fun bind(albumInfo: BaseAlbumInfo) {

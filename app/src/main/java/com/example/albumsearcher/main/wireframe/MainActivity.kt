@@ -3,10 +3,13 @@ package com.example.albumsearcher.main.wireframe
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.albumsearcher.databinding.ActivityMainBinding
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.albumsearcher.R
 import com.example.albumsearcher.Shared
 import com.example.albumsearcher.albumInfo.wireframe.AlbumInfoActivity
 import com.example.albumsearcher.main.adapters.RecyclerAdapter
@@ -14,8 +17,6 @@ import com.example.albumsearcher.main.viewModel.MainViewModel
 
 import com.example.albumsearcher.util.viewModelsExt
 import com.google.android.material.snackbar.Snackbar
-
-const val LOG_TAG = "AlbumSearcher"
 
 class MainActivity : AppCompatActivity(), RecyclerAdapter.OnItemClickListener {
 
@@ -41,23 +42,32 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.OnItemClickListener {
         }
 
         viewModel.err.observe(this) {
-            Log.e(LOG_TAG, it.stackTraceToString())
-            showSnack(it.message ?: "", Snackbar.LENGTH_LONG)//R.string.unkown_error
+            Log.e(Shared.LOG_TAG, it.stackTraceToString())
+            showSnack(it.message ?: getString(R.string.unknown_error), Snackbar.LENGTH_LONG)
         }
 
         viewModel.noResultEvent.observe(this) {
-            showSnack("No results", Snackbar.LENGTH_SHORT)
+            showSnack(getString(R.string.no_results), Snackbar.LENGTH_SHORT)
         }
     }
 
-    private fun showSnack(text: String, length : Int) {
+    private fun showSnack(text: String, length: Int) {
         Snackbar.make(binding.root, text, length).show()
     }
 
     override fun onItemClick(position: Int) {
-        startActivity(Intent(this, AlbumInfoActivity::class.java).apply {
+        val intent = Intent(this, AlbumInfoActivity::class.java).apply {
             putExtra(Shared.CLICKED_ITEM_ID, viewModel.getItemIDByPosition(position))
-        })
+        }
+        startForResult.launch(intent)
 
     }
+
+    private val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == RESULT_CANCELED) {
+                intent.getStringExtra(Shared.ERR_ANSWER)
+                    ?.let { showSnack(it, Snackbar.LENGTH_SHORT) }
+            }
+        }
 }

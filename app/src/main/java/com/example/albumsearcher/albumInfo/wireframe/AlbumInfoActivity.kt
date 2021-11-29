@@ -8,6 +8,9 @@ import com.example.albumsearcher.albumInfo.viewModel.AlbumInfoViewModel
 import com.example.albumsearcher.albumInfo.adapters.RecyclerAdapter
 import com.example.albumsearcher.databinding.ActivityAlbumInfoBinding
 import com.example.albumsearcher.util.viewModelsExt
+import android.content.Intent
+import android.util.Log
+import com.example.albumsearcher.R
 
 class AlbumInfoActivity : AppCompatActivity() {
 
@@ -34,6 +37,14 @@ class AlbumInfoActivity : AppCompatActivity() {
             adapter.setData(it)
         }
 
+        viewModel.err.observe(this) {
+            Log.e(Shared.LOG_TAG, it.stackTraceToString() )
+            val intent = Intent().apply {
+                putExtra(Shared.ERR_ANSWER, getString(R.string.album_not_found_err))
+            }
+            setResult(RESULT_CANCELED, intent)
+            finish()
+        }
 
     }
 }

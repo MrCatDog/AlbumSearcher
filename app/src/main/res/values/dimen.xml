@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="search_item_margin">5dp</dimen>
-    <dimen name="search_item_base_info_padding">5dp</dimen>
+    <dimen name="search_item_base_info_margin">5dp</dimen>
     <dimen name="search_item_cover_width">100dp</dimen>
     <dimen name="search_item_cover_height">100dp</dimen>
     <dimen name="album_info_margin">5dp</dimen>
     <dimen name="album_info_cover_width">100dp</dimen>
     <dimen name="album_info_cover_height">100dp</dimen>
     <dimen name="album_info_padding_from_cover">5dp</dimen>
+    <dimen name="album_info_padding_genre_country_exp">5dp</dimen>
+    <dimen name="album_info_margin_currency">2dp</dimen>
+    <dimen name="song_name_margin">5dp</dimen>
 </resources>

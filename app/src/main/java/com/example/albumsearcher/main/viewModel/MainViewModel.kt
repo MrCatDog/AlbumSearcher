@@ -35,8 +35,8 @@ class MainViewModel : ViewModel() {
         get() = _err
 
     private val _noResultEvent = MutableLiveEvent<Boolean?>()
-    val noResultEvent : LiveData<Boolean?>
-            get() = _noResultEvent
+    val noResultEvent: LiveData<Boolean?>
+        get() = _noResultEvent
 
     fun getItemIDByPosition(position: Int): String? = _albums.value?.get(position)?.albumId
 
@@ -45,7 +45,7 @@ class MainViewModel : ViewModel() {
             dataReceiver.cancel()
             try {
                 findMore(text)
-            } catch (ex : Exception) {
+            } catch (ex: Exception) {
                 _err.setValue(ex)
             }
         } else {
@@ -55,7 +55,7 @@ class MainViewModel : ViewModel() {
 
     private fun findMore(text: String) {
         dataReceiver.requestData(
-            URL_BASE+text + URL_PARAMETERS,
+            URL_BASE + text + URL_PARAMETERS,
             this::onResponse,
             this::onFailure
         )
@@ -71,7 +71,7 @@ class MainViewModel : ViewModel() {
         if (!response.isSuccessful) {
             _err.postValue(IOException(response.message + response.code.toString()))
         } else {
-            val answer = JSONObject(response.body?.string() ?: throw IOException())
+            val answer = JSONObject(response.body?.string() ?: throw IOException(response.message))
             val count = answer.get(RESULT_COUNT_TAG) as Int
             if (count == 0) {
                 _noResultEvent.postValue(null)

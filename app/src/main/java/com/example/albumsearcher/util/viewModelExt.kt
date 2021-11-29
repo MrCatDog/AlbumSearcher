@@ -15,7 +15,11 @@ inline fun <reified VM : ViewModel> ComponentActivity.viewModelsExt(
 ) = this.viewModels<VM> {
     object : AbstractSavedStateViewModelFactory(this, null) {
         @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(key: String, modelClass: Class<T>, handle: SavedStateHandle): T {
+        override fun <T : ViewModel> create(
+            key: String,
+            modelClass: Class<T>,
+            handle: SavedStateHandle
+        ): T {
             return creator(handle) as T
         }
     }
@@ -27,7 +31,11 @@ inline fun <reified VM : ViewModel> Fragment.viewModelsExt(
 ) = this.viewModels<VM> {
     object : AbstractSavedStateViewModelFactory(this, null) {
         @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(key: String, modelClass: Class<T>, handle: SavedStateHandle): T {
+        override fun <T : ViewModel> create(
+            key: String,
+            modelClass: Class<T>,
+            handle: SavedStateHandle
+        ): T {
             return creator(handle) as T
         }
     }

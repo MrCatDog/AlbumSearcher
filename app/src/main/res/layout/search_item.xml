@@ -25,7 +25,8 @@
         <TextView
             android:id="@+id/album_name_holder"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/search_item_base_info_margin"
             android:gravity="bottom|start"
             android:text="@{album.albumName}"
             app:layout_constraintBottom_toTopOf="@id/artist_name_holder"
@@ -36,7 +37,8 @@
         <TextView
             android:id="@+id/artist_name_holder"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/search_item_base_info_margin"
             android:text="@{album.artistName}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/image_holder"

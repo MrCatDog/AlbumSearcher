@@ -1,10 +1,8 @@
 package com.example.albumsearcher.albumInfo.viewModel
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.albumsearcher.R
 import com.example.albumsearcher.albumInfo.model.AdditionalAlbumInfo
 import com.example.albumsearcher.albumInfo.model.SongInfo
 import com.example.albumsearcher.util.DataReceiver
@@ -13,8 +11,7 @@ import okhttp3.*
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
-
-//https://itunes.apple.com/lookup?id=545398133&entity=song&attribute=albumTerm
+import kotlin.collections.ArrayList
 
 const val URL_BASE = "https://itunes.apple.com/lookup?id="
 const val URL_PARAMETERS = "&entity=song&attribute=albumTerm&limit=200"
@@ -32,6 +29,8 @@ const val RELEASE = "releaseDate"
 const val COPYRIGHT = "copyright"
 const val GENRE = "primaryGenreName"
 const val EXPLICITNESS = "collectionExplicitness"
+
+const val TIME_LETTER = "T"
 
 const val SONG_NAME = "trackName"
 
@@ -52,10 +51,14 @@ class AlbumInfoViewModel(stringExtra: String?) : ViewModel() {
         get() = _err
 
     init {
-        if (stringExtra != null) {
-            findMore(stringExtra)
+        if (stringExtra == null) {
+            _err.setValue(IOException())
         } else {
-            _err.setValue(IOException("Альбом не найден!"))
+            try {
+                findMore(stringExtra)
+            } catch (ex: Exception) {
+                _err.setValue(ex)
+            }
         }
     }
 
@@ -71,12 +74,13 @@ class AlbumInfoViewModel(stringExtra: String?) : ViewModel() {
         if (!response.isSuccessful) {
             _err.postValue(IOException(response.message + response.code.toString()))
         } else {
-            val answer = JSONObject(response.body?.string())
+            val answer = JSONObject(response.body?.string() ?: throw IOException(response.message))
             val count = answer.get(RESULT_COUNT_TAG) as Int
             if (count == 0) {
-                _err.postValue(IOException("Album not found!"))
+                _err.postValue(IOException(response.message))
             } else {
                 val jArray = answer.get(RESULT_TAG) as JSONArray
+
                 jArray.getJSONObject(0).apply {
                     _album.postValue(
                         AdditionalAlbumInfo(
@@ -87,13 +91,14 @@ class AlbumInfoViewModel(stringExtra: String?) : ViewModel() {
                             songCount = this.getString(TRACK_COUNT),
                             country = this.getString(COUNTRY),
                             currency = this.getString(CURRENCY),
-                            release = this.getString(RELEASE),
+                            release = this.getString(RELEASE).substringBefore(TIME_LETTER),
                             copyright = this.getString(COPYRIGHT),
                             genre = this.getString(GENRE),
                             explicit = this.getString(EXPLICITNESS)
                         )
                     )
                 }
+
                 val songs = ArrayList<SongInfo>()
                 for (i in 1 until count) {
                     val song = jArray.getJSONObject(i)

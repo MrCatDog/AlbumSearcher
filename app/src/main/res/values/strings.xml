@@ -2,6 +2,8 @@
     <string name="app_name">AlbumSearcher</string>
     <string name="search_hint">Lets find something</string>
     <string name="album_image_desc">Album cover</string>
-    
+    <string name="unknown_error">Unpredicted error</string>
+    <string name="no_results">No results</string>
     <string name="album_info_songs_precurse">Songs: </string>
+    <string name="album_not_found_err">Album not found!</string>
 </resources>

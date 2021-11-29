@@ -2,7 +2,7 @@ package com.example.albumsearcher.albumInfo.model
 
 data class AdditionalAlbumInfo(
     val albumName: String,
-    val artistName:String,
+    val artistName: String,
     val coverURL: String,
     val price: String,
     val songCount: String,
@@ -12,4 +12,4 @@ data class AdditionalAlbumInfo(
     val copyright: String,
     val genre: String,
     val explicit: String
-    )
+)
