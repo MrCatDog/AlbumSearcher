@@ -60,14 +60,22 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.OnItemClickListener {
             putExtra(Shared.CLICKED_ITEM_ID, viewModel.getItemIDByPosition(position))
         }
         startForResult.launch(intent)
-
     }
 
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-            if (result.resultCode == RESULT_CANCELED) {
-                intent.getStringExtra(Shared.ERR_ANSWER)
-                    ?.let { showSnack(it, Snackbar.LENGTH_SHORT) }
+            if (result.resultCode == RESULT_CANCELED && result.data?.getBooleanExtra(
+                    Shared.WAS_ERROR_FLAG,
+                    false
+                ) == true
+            ) {
+                val text = result.data?.getStringExtra(Shared.ERR_ANSWER)
+                if (text != null) {
+                    showSnack(text, Snackbar.LENGTH_LONG)
+                } else {
+                    showSnack(getString(R.string.album_not_found_err), Snackbar.LENGTH_SHORT)
+                }
             }
+            binding.searchBar.clearFocus() //почему этот элемент его вообще получает?
         }
 }

@@ -40,7 +40,8 @@ class AlbumInfoActivity : AppCompatActivity() {
         viewModel.err.observe(this) {
             Log.e(Shared.LOG_TAG, it.stackTraceToString() )
             val intent = Intent().apply {
-                putExtra(Shared.ERR_ANSWER, getString(R.string.album_not_found_err))
+                putExtra(Shared.WAS_ERROR_FLAG, true)
+                putExtra(Shared.ERR_ANSWER, it.message)
             }
             setResult(RESULT_CANCELED, intent)
             finish()
